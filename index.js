@@ -54,6 +54,9 @@
     server.use(bodyParser.json());
     server.use(cors(corsOptions)); // Habilitar CORS con las opciones definidas
 
+    // Sirve los archivos estáticos desde el directorio "frond"
+    server.use(express.static(path.join(__dirname, 'frond')));
+
     // Define un middleware de autenticación
     const authMiddleware = (req, res, next) => {
         // Obtener el token de la solicitud (desde el encabezado Authorization)
@@ -101,12 +104,9 @@
     server.use('/La_holandesa',authMiddleware, routercompra )
 
 
-    // Sirve los archivos estáticos desde el directorio "frond"
-    server.use(express.static(path.join(__dirname, 'frond')));
-
     // Redirige todas las rutas al archivo index.html de tu frontend
     server.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'frond', 'index.html'));
+        res.sendFile(path.join(__dirname, 'frond', 'Z.administrador', 'index.html'));
     });
 
     server.listen(PORT,() =>{
