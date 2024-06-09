@@ -6,14 +6,18 @@
         "use": "@vercel/node"
       },
       {
-        "src": "front/**",
+        "src": "front/**/*",
         "use": "@vercel/static"
       }
     ],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "/La_holandesa/(.*)",
         "dest": "index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/front/$1"
       }
     ]
   }
