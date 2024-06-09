@@ -110,6 +110,7 @@
         res.sendFile(path.join(__dirname, 'frond', 'Z.administrador', 'usuarios.html'));
     });
     
+    
     // Redirige todas las rutas al archivo index.html de tu frontend
     server.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'frond', 'Z.administrador', 'index.html'));
