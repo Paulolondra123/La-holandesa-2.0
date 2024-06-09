@@ -1,0 +1,31 @@
+{
+  "name": "sistema_web_para_el_control_de_compra_y_venta_de_productos_lacteos_y_sus_derivados_de_la_micro_tienda_la_holandesa_de_queso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.1.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "bootstrap-table": "^1.22.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "datatables.net-dt": "^2.0.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "mssql": "^10.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.5",
+    "select2": "^4.1.0-rc.0",
+    "validator": "^13.12.0"
+  }
+}
