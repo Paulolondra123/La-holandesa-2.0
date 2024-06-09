@@ -36,7 +36,7 @@
   
     // Habilitar CORS para permitir solicitudes desde http://127.0.0.1:5500
     const corsOptions = {
-        origin: 'http://127.0.0.1:5500', // Permitir solicitudes solo desde este origen
+        origin: ['http://127.0.0.1:5500', 'https://la-holandesa.vercel.app'],  // Permitir solicitudes solo desde este origen
         methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'], // Métodos permitidos
         allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization'], // Encabezados permitidos
         credentials: true // Permitir el intercambio de cookies entre orígenes
