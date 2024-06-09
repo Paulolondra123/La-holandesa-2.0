@@ -7,6 +7,7 @@
     const cors = require('cors');
     const bodyParser = require('body-parser');
     const jwt = require('jsonwebtoken');
+    const path = require('path');
 
     dotenv.config()
 
@@ -36,7 +37,7 @@
   
     // Habilitar CORS para permitir solicitudes desde http://127.0.0.1:5500
     const corsOptions = {
-        origin: ['http://127.0.0.1:5500', 'https://la-holandesa-paulolondra123-paulolondra123s-projects.vercel.app'],  // Permitir solicitudes solo desde este origen
+        origin: ['http://127.0.0.1:5500', 'https://la-holandesa-paulolondra123-paulolondra123s-projects.vercel.app', 'https://la-holandesa-2-0.vercel.app'],  // Permitir solicitudes solo desde este origen
         methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'], // Métodos permitidos
         allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization'], // Encabezados permitidos
         credentials: true // Permitir el intercambio de cookies entre orígenes
@@ -100,11 +101,23 @@
     server.use('/La_holandesa',authMiddleware, routercompra )
 
 
+    // Sirve los archivos estáticos desde el directorio "frond"
+    server.use(express.static(path.join(__dirname, 'frond')));
 
-    server.get ('/', (req, res) => {
+    // Redirige todas las rutas al archivo index.html de tu frontend
+    server.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'frond', 'index.html'));
+    });
+
+    server.listen(PORT,() =>{
+        console.log(`servidor corriendo en http://localhost:${PORT}`);
+    })
+
+    /* server.get ('/', (req, res) => {
         res.send('Api Proyect')
     })
 
     server.listen(PORT,() =>{
         console.log(`servidor corriendo en http://localhost:${PORT}`);
     })
+ */
