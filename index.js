@@ -36,7 +36,7 @@
   
     // Habilitar CORS para permitir solicitudes desde http://127.0.0.1:5500
     const corsOptions = {
-        origin: ['http://127.0.0.1:5500', 'https://la-holandesa.vercel.app'],  // Permitir solicitudes solo desde este origen
+        origin: ['http://127.0.0.1:5500', 'https://la-holandesa-paulolondra123-paulolondra123s-projects.vercel.app'],  // Permitir solicitudes solo desde este origen
         methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'], // Métodos permitidos
         allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization'], // Encabezados permitidos
         credentials: true // Permitir el intercambio de cookies entre orígenes
@@ -79,7 +79,7 @@
             // Si no hay token, el usuario no está autenticado
             // Redirigir al usuario a la página de inicio de sesión
             console.log("REDIRECCIONAR")
-            return res.redirect("http://127.0.0.1:5500/frond/Z.administrador/usuarios.html");
+            return res.redirect("http://la-holandesa-paulolondra123-paulolondra123s-projects.vercel.app/frond/Z.administrador/usuarios.html");
         }
         } catch (error) {
         // Error al verificar el token
