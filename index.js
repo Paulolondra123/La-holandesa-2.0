@@ -104,6 +104,12 @@
     server.use('/La_holandesa',authMiddleware, routercompra )
 
 
+
+    // Rutas para servir otros archivos HTML
+    server.get('/usuarios.html', (req, res) => {
+        res.sendFile(path.join(__dirname, 'frond', 'Z.administrador', 'usuarios.html'));
+    });
+    
     // Redirige todas las rutas al archivo index.html de tu frontend
     server.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'frond', 'Z.administrador', 'index.html'));
