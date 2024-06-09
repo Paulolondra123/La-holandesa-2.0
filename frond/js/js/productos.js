@@ -577,7 +577,7 @@ const getAllMeasuresPromise = getAllMeasure();
                           ],
                           pageLength: 5,
                           rowCallback: function (row, data) {
-                              if (data[5] < 10) {
+                              if (data[5] < 5) {
                                   $('td:eq(5)', row).css('color', 'red');
                               }
                           },
