@@ -21,5 +21,6 @@ router.post('/create_Productos', Users.createUser);
 router.put('/Productos/:id_usuario', Users.updateUser); 
 // Ruta para eliminar un usuario
 router.delete('/Productos_delete/:userId', Users.deleteUser);
-
+// Ruta para obtener el stock de los productos
+router.get('/productos_stock',Users.stock)
 module.exports = router

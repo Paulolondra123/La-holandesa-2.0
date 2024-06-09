@@ -148,6 +148,26 @@ class Usersmodel {
       return false;
     }
   }
+
+  // Método para obtener tel stock
+  static async stock() {
+    try {
+      const pool = await connectToPostgres();
+      if (!pool) {
+        throw new Error('Error al conectar con PostgreSQL');
+      }
+      const result = await pool.query('select id_producto, stock, nombre_producto from producto ');
+      await disconnectFromPostgres(pool);
+      /* console.log(result.rows) */
+      if (result.rows.length === 0) {
+        return { data: null, error: true, message: 'No hay productos registrados' };
+      }
+
+      return { data: result.rows, error: false };
+    } catch (error) {
+      return { data: null, error: true, message: error.message };
+    }
+  }
 }
 
 

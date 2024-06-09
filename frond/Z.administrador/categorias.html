@@ -132,8 +132,8 @@
               ></div>
             </div>
             <div class="ms-3">
-              <h6 class="mb-0" id="usernav">Eduardo Castro</h6>
-              <span id="perfi">administradr</span>
+              <h6 class="mb-0" id="usernav">adm</h6>
+              <span id="perfi">adm</span>
             </div>
           </div>
           <div class="navbar-nav w-100">
@@ -166,28 +166,6 @@
                 <a href="compras.html" class="dropdown-item">Compras</a>
               </div>
             </div>
-            <!-- <div class="nav-item dropdown">
-              <a
-                href="#"
-                class="nav-link dropdown-toggle"
-                data-bs-toggle="dropdown"
-                ><i class="fa fa-laptop me-2"></i>Elements</a
-              >
-              <div class="dropdown-menu bg-transparent border-0">
-                <a href="button.html" class="dropdown-item">Buttons</a>
-                <a href="typography.html" class="dropdown-item">Typography</a>
-                <a href="element.html" class="dropdown-item">Other Elements</a>
-              </div>
-            </div>
-            <a href="widget.html" class="nav-item nav-link"
-              ><i class="fa fa-th me-2"></i>Widgets</a
-            >
-            <a href="form.html" class="nav-item nav-link"
-              ><i class="fa fa-keyboard me-2"></i>Forms</a
-            >
-            <a href="table.html" class="nav-item nav-link"
-              ><i class="fa fa-table me-2"></i>Tables</a
-            > -->
           </div>
         </nav>
       </div>
@@ -215,35 +193,15 @@
           </form>
           <div class="navbar-nav align-items-center ms-auto">
             <div class="nav-item dropdown">
-              <a
-                href="#"
-                class="nav-link dropdown-toggle"
-                data-bs-toggle="dropdown"
-              >
-                <i class="fa fa-bell me-lg-2"></i>
-                <span class="d-none d-lg-inline-flex">Notificatin</span>
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="notification-link">
+                <i class="fa fa-bell me-lg-2" id="notification-bell"></i>
+                <div class="end bottom" id="notification-badge"></div>
+                <span class="d-none d-lg-inline-flex">Notificaciones</span>
               </a>
-              <div
-                class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0"
-              >
-                <a href="#" class="dropdown-item">
-                  <h6 class="fw-normal mb-0">Profile updated</h6>
-                  <small>15 minutes ago</small>
-                </a>
-                <hr class="dropdown-divider" />
-                <a href="#" class="dropdown-item">
-                  <h6 class="fw-normal mb-0">New user added</h6>
-                  <small>15 minutes ago</small>
-                </a>
-                <hr class="dropdown-divider" />
-                <a href="#" class="dropdown-item">
-                  <h6 class="fw-normal mb-0">Password changed</h6>
-                  <small>15 minutes ago</small>
-                </a>
-                <hr class="dropdown-divider" />
-                <a href="#" class="dropdown-item text-center"
-                  >See all notifications</a
-                >
+              <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" id="notification-menu">
+                <div id="notification-content">
+                  <!-- Notificaciones serán añadidas aquí dinámicamente -->
+                </div>
               </div>
             </div>
             <div class="nav-item dropdown">
@@ -258,7 +216,7 @@
                   alt=""
                   style="width: 40px; height: 40px"
                 />
-                <span class="d-none d-lg-inline-flex" id="usernavtop">Eduardo Castro</span>
+                <span class="d-none d-lg-inline-flex" id="usernavtop">adm</span>
               </a>
               <div
                 class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0"

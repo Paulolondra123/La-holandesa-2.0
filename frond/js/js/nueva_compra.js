@@ -278,3 +278,129 @@ const fillContactInfo = () => {
 
 // Llama a esta función después de poblar los select
 fillContactInfo();
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //*************************************notificaciones**************************************/
+  
+  const getAllProductos = async () => {
+    try {
+        // Verificar si el token está presente en el localStorage
+        const token = localStorage.getItem("token");
+        if (!token) {
+            // Si el token no está presente, redirigir al usuario a la página de inicio de sesión
+            window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
+            return; // Detener la ejecución del código
+        }
+        const response = await fetch("http://localhost:3009/La_holandesa/productos_stock", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Error en la solicitud");
+        }
+        const result = await response.json();
+        console.log(result.data)
+        if (result.error) {
+            console.error("Error:", result.message);
+            return [];
+        } else {
+            return result.data;
+        }
+    } catch (error) {
+        console.error("Error:", error.message);
+        return [];
+    }
+};
+  
+document.addEventListener('DOMContentLoaded', async (event) => {
+  const notificationBadge = document.getElementById('notification-badge');
+  const notificationLink = document.getElementById('notification-link');
+  const notificationBell = document.getElementById('notification-bell');
+  const notificationContent = document.getElementById('notification-content');
+
+  function showNotificationBadge() {
+    notificationBadge.style.display = 'block';
+  }
+
+  function hideNotificationBadge() {
+    notificationBadge.style.display = 'none';
+  }
+
+  const productos = await getAllProductos();
+  const productosBajoStock = productos.filter(producto => producto.stock < 5);
+
+  if (productosBajoStock.length > 0) {
+    showNotificationBadge();
+    notificationBell.classList.add('shake');
+    notificationContent.innerHTML = ''; // Limpiar el contenido de notificaciones
+
+    if (!localStorage.getItem('notificationTime')) {
+      localStorage.setItem('notificationTime', new Date().toISOString());
+    }
+
+    const notificationTime = new Date(localStorage.getItem('notificationTime'));
+
+    const calculateTimeElapsed = () => {
+      const currentTime = new Date();
+      const diffTime = Math.abs(currentTime - notificationTime);
+      const diffMinutes = Math.floor(diffTime / (1000 * 60));
+      const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays > 0) {
+        return `Hace ${diffDays} dia${diffDays > 1 ? 's' : ''}`;
+      } else if (diffHours > 0) {
+        return `Hace ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
+      } else {
+        return `Hace ${diffMinutes} minuto${diffMinutes > 1 ? 's' : ''}`;
+      }
+    };
+
+    productosBajoStock.forEach(producto => {
+      const notificationItem = document.createElement('a');
+      notificationItem.href = "productos.html";
+      notificationItem.className = "dropdown-item";
+      const timeElapsed = document.createElement('small');
+
+      timeElapsed.textContent = calculateTimeElapsed();
+      setInterval(() => {
+        timeElapsed.textContent = calculateTimeElapsed();
+      }, 60000); // Actualizar cada minuto
+
+      notificationItem.innerHTML = `
+        <h6 class="fw-normal mb-0">${producto.nombre_producto}: <br> ${producto.stock} en stock</h6>
+      `;
+      notificationItem.appendChild(timeElapsed);
+      notificationContent.appendChild(notificationItem);
+
+      const divider = document.createElement('hr');
+      divider.className = "dropdown-divider";
+      notificationContent.appendChild(divider);
+    });
+
+    /* const seeAllItem = document.createElement('a');
+    seeAllItem.href = "#";
+    seeAllItem.className = "dropdown-item text-center";
+    seeAllItem.textContent = "See all notifications";
+    notificationContent.appendChild(seeAllItem); */
+  }
+
+  notificationLink.addEventListener('click', () => {
+    notificationBell.classList.remove('shake');
+    hideNotificationBadge();
+  });
+});
+
+  //*************************************notificaciones**************************************/

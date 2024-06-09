@@ -6,6 +6,51 @@
     --dark: #000000;
     /* --dark: #f7fff7; */
 }
+
+/* animacion para la campanita de notificaciones */
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(45deg); }
+    50% { transform: rotate(-45deg); }
+    75% { transform: rotate(45deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  .shake {
+    animation: shake 1s infinite;
+  }
+  
+  @keyframes shake {
+    0%, 15% { transform: rotate(0deg); }
+    25% { transform: rotate(45deg); }
+    50% { transform: rotate(-45deg); }
+    75% { transform: rotate(45deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  #notification-bell {
+    position: relative;
+  }
+  
+  #notification-badge {
+    background-color: #28a745; /* verde */
+    border: 2px solid #fff; /* blanco */
+    border-radius: 50%; /* para formar un círculo */
+    padding: 4px; /* ajustar el relleno según sea necesario */
+    position: absolute;
+    bottom: 30%; /* lo mueve hacia abajo */
+    right: 70%; /* lo mueve hacia la derecha */
+    transform: translate(50%, 50%); /* centra el círculo en la esquina */
+    display: none; /* inicialmente oculto */
+  }
+
+  #notification-content {
+    max-height: 200px; /* ajusta esta altura según sea necesario */
+    overflow-y: auto;
+  }
+  
+  
+  
 /* Mantén el fondo del campo de entrada y el color del texto cuando está en estado de solo lectura */
 input[readonly] {
     background-color: #f8f9fa; /* Mantén el color de fondo deseado */
