@@ -671,7 +671,7 @@ getAll()
             throw new Error("Error en la solicitud");
         }
         const result = await response.json();
-        console.log(result.data)
+        //console.log(result.data)
         if (result.error) {
             console.error("Error:", result.message);
             return [];
@@ -706,15 +706,20 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     notificationBell.classList.add('shake');
     notificationContent.innerHTML = ''; // Limpiar el contenido de notificaciones
 
-    if (!localStorage.getItem('notificationTime')) {
-      localStorage.setItem('notificationTime', new Date().toISOString());
-    }
+    const notificationTimes = JSON.parse(localStorage.getItem('notificationTimes')) || {};
 
-    const notificationTime = new Date(localStorage.getItem('notificationTime'));
+    productosBajoStock.forEach(producto => {
+      if (!notificationTimes[producto.id_producto]) {
+        notificationTimes[producto.id_producto] = new Date().toISOString();
+      }
+    });
 
-    const calculateTimeElapsed = () => {
+    localStorage.setItem('notificationTimes', JSON.stringify(notificationTimes));
+
+    const calculateTimeElapsed = (startTime) => {
       const currentTime = new Date();
-      const diffTime = Math.abs(currentTime - notificationTime);
+      const startTimeDate = new Date(startTime);
+      const diffTime = Math.abs(currentTime - startTimeDate);
       const diffMinutes = Math.floor(diffTime / (1000 * 60));
       const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -734,9 +739,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
       notificationItem.className = "dropdown-item";
       const timeElapsed = document.createElement('small');
 
-      timeElapsed.textContent = calculateTimeElapsed();
+      timeElapsed.textContent = calculateTimeElapsed(notificationTimes[producto.id_producto]);
       setInterval(() => {
-        timeElapsed.textContent = calculateTimeElapsed();
+        timeElapsed.textContent = calculateTimeElapsed(notificationTimes[producto.id_producto]);
       }, 60000); // Actualizar cada minuto
 
       notificationItem.innerHTML = `
@@ -755,6 +760,10 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     seeAllItem.className = "dropdown-item text-center";
     seeAllItem.textContent = "See all notifications";
     notificationContent.appendChild(seeAllItem); */
+  } else {
+    localStorage.removeItem('notificationTime');
+    hideNotificationBadge();
+    notificationBell.classList.remove('shake');
   }
 
   notificationLink.addEventListener('click', () => {

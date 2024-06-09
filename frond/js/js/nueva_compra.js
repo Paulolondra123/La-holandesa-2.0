@@ -311,7 +311,7 @@ fillContactInfo();
             throw new Error("Error en la solicitud");
         }
         const result = await response.json();
-        console.log(result.data)
+        //console.log(result.data)
         if (result.error) {
             console.error("Error:", result.message);
             return [];
@@ -325,82 +325,91 @@ fillContactInfo();
 };
   
 document.addEventListener('DOMContentLoaded', async (event) => {
-  const notificationBadge = document.getElementById('notification-badge');
-  const notificationLink = document.getElementById('notification-link');
-  const notificationBell = document.getElementById('notification-bell');
-  const notificationContent = document.getElementById('notification-content');
-
-  function showNotificationBadge() {
-    notificationBadge.style.display = 'block';
-  }
-
-  function hideNotificationBadge() {
-    notificationBadge.style.display = 'none';
-  }
-
-  const productos = await getAllProductos();
-  const productosBajoStock = productos.filter(producto => producto.stock < 5);
-
-  if (productosBajoStock.length > 0) {
-    showNotificationBadge();
-    notificationBell.classList.add('shake');
-    notificationContent.innerHTML = ''; // Limpiar el contenido de notificaciones
-
-    if (!localStorage.getItem('notificationTime')) {
-      localStorage.setItem('notificationTime', new Date().toISOString());
+    const notificationBadge = document.getElementById('notification-badge');
+    const notificationLink = document.getElementById('notification-link');
+    const notificationBell = document.getElementById('notification-bell');
+    const notificationContent = document.getElementById('notification-content');
+  
+    function showNotificationBadge() {
+      notificationBadge.style.display = 'block';
     }
-
-    const notificationTime = new Date(localStorage.getItem('notificationTime'));
-
-    const calculateTimeElapsed = () => {
-      const currentTime = new Date();
-      const diffTime = Math.abs(currentTime - notificationTime);
-      const diffMinutes = Math.floor(diffTime / (1000 * 60));
-      const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-      if (diffDays > 0) {
-        return `Hace ${diffDays} dia${diffDays > 1 ? 's' : ''}`;
-      } else if (diffHours > 0) {
-        return `Hace ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
-      } else {
-        return `Hace ${diffMinutes} minuto${diffMinutes > 1 ? 's' : ''}`;
-      }
-    };
-
-    productosBajoStock.forEach(producto => {
-      const notificationItem = document.createElement('a');
-      notificationItem.href = "productos.html";
-      notificationItem.className = "dropdown-item";
-      const timeElapsed = document.createElement('small');
-
-      timeElapsed.textContent = calculateTimeElapsed();
-      setInterval(() => {
-        timeElapsed.textContent = calculateTimeElapsed();
-      }, 60000); // Actualizar cada minuto
-
-      notificationItem.innerHTML = `
-        <h6 class="fw-normal mb-0">${producto.nombre_producto}: <br> ${producto.stock} en stock</h6>
-      `;
-      notificationItem.appendChild(timeElapsed);
-      notificationContent.appendChild(notificationItem);
-
-      const divider = document.createElement('hr');
-      divider.className = "dropdown-divider";
-      notificationContent.appendChild(divider);
+  
+    function hideNotificationBadge() {
+      notificationBadge.style.display = 'none';
+    }
+  
+    const productos = await getAllProducto();
+    const productosBajoStock = productos.filter(producto => producto.stock < 5);
+  
+    if (productosBajoStock.length > 0) {
+      showNotificationBadge();
+      notificationBell.classList.add('shake');
+      notificationContent.innerHTML = ''; // Limpiar el contenido de notificaciones
+  
+      const notificationTimes = JSON.parse(localStorage.getItem('notificationTimes')) || {};
+  
+      productosBajoStock.forEach(producto => {
+        if (!notificationTimes[producto.id_producto]) {
+          notificationTimes[producto.id_producto] = new Date().toISOString();
+        }
+      });
+  
+      localStorage.setItem('notificationTimes', JSON.stringify(notificationTimes));
+  
+      const calculateTimeElapsed = (startTime) => {
+        const currentTime = new Date();
+        const startTimeDate = new Date(startTime);
+        const diffTime = Math.abs(currentTime - startTimeDate);
+        const diffMinutes = Math.floor(diffTime / (1000 * 60));
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+        if (diffDays > 0) {
+          return `Hace ${diffDays} dia${diffDays > 1 ? 's' : ''}`;
+        } else if (diffHours > 0) {
+          return `Hace ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
+        } else {
+          return `Hace ${diffMinutes} minuto${diffMinutes > 1 ? 's' : ''}`;
+        }
+      };
+  
+      productosBajoStock.forEach(producto => {
+        const notificationItem = document.createElement('a');
+        notificationItem.href = "productos.html";
+        notificationItem.className = "dropdown-item";
+        const timeElapsed = document.createElement('small');
+  
+        timeElapsed.textContent = calculateTimeElapsed(notificationTimes[producto.id_producto]);
+        setInterval(() => {
+          timeElapsed.textContent = calculateTimeElapsed(notificationTimes[producto.id_producto]);
+        }, 60000); // Actualizar cada minuto
+  
+        notificationItem.innerHTML = `
+          <h6 class="fw-normal mb-0">${producto.nombre_producto}: <br> ${producto.stock} en stock</h6>
+        `;
+        notificationItem.appendChild(timeElapsed);
+        notificationContent.appendChild(notificationItem);
+  
+        const divider = document.createElement('hr');
+        divider.className = "dropdown-divider";
+        notificationContent.appendChild(divider);
+      });
+  
+      /* const seeAllItem = document.createElement('a');
+      seeAllItem.href = "#";
+      seeAllItem.className = "dropdown-item text-center";
+      seeAllItem.textContent = "See all notifications";
+      notificationContent.appendChild(seeAllItem); */
+    } else {
+      localStorage.removeItem('notificationTime');
+      hideNotificationBadge();
+      notificationBell.classList.remove('shake');
+    }
+  
+    notificationLink.addEventListener('click', () => {
+      notificationBell.classList.remove('shake');
+      hideNotificationBadge();
     });
-
-    /* const seeAllItem = document.createElement('a');
-    seeAllItem.href = "#";
-    seeAllItem.className = "dropdown-item text-center";
-    seeAllItem.textContent = "See all notifications";
-    notificationContent.appendChild(seeAllItem); */
-  }
-
-  notificationLink.addEventListener('click', () => {
-    notificationBell.classList.remove('shake');
-    hideNotificationBadge();
   });
-});
 
   //*************************************notificaciones**************************************/
