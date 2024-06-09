@@ -1,0 +1,429 @@
+/********** Template CSS **********/
+:root {
+    --primary: #dabf61;
+    --secondary: #191C24;
+    --light: #6C7293;
+    --dark: #000000;
+    /* --dark: #f7fff7; */
+}
+/* Mantén el fondo del campo de entrada y el color del texto cuando está en estado de solo lectura */
+input[readonly] {
+    background-color: #f8f9fa; /* Mantén el color de fondo deseado */
+    color: #212529; /* Mantén el color del texto deseado */
+    opacity: 1; /* Asegúrate de que el campo no se vuelva transparente */
+}
+
+#myTable td {
+    word-wrap: break-word;
+}
+
+
+
+.select2-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    vertical-align: middle;
+}
+
+.select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 38px; /* Mantén la altura que ajustaste */
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    align-items: center; /* Centrar verticalmente */
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    display: block;
+    padding-left: 8px;
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left; /* Alinear horizontalmente a la izquierda */
+    flex: 1; /* Asegura que el texto tome todo el espacio disponible */
+    margin-top: 4px; /* Ajuste para bajar un poco el texto verticalmente */
+}
+
+.select2-container .select2-selection--single .select2-selection__arrow {
+    height: 38px; /* Ajustar la altura del ícono de flecha */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Placeholder alineado a la izquierda */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #999;
+    text-align: left; /* Alinear horizontalmente a la izquierda */
+    flex: 1; /* Asegura que el texto tome todo el espacio disponible */
+    margin-top: 4px; /* Ajuste para bajar un poco el texto verticalmente */
+}
+
+
+
+
+/* Estilos para el cuadro de selección */
+.select2-container .select2-selection {
+    background-color: black; /* Cambia el color de fondo */
+    border-color: #000000; /* Cambia el color del borde */
+    color: #333; /* Cambia el color del texto */
+  }
+  
+  /* Estilos para las opciones del menú desplegable */
+  .select2-container .select2-dropdown {
+    background-color: black; /* Cambia el color de fondo */
+    border-color: #ccc; /* Cambia el color del borde */
+    color: #5a5959; /* Cambia el color del texto */
+  }
+body * {
+    font-size: 16px; /* Cambia el tamaño del texto y de todos los elementos dentro del body */
+  }
+  
+  /* Puedes ajustar el tamaño de otros elementos según sea necesario */
+  img {
+    max-width: 100%; /* Hace que las imágenes sean responsivas y se ajusten al ancho del contenedor padre */
+  }
+  /* Estilos del scrollbar */
+::-webkit-scrollbar {
+    background: transparent;
+    width: 8px; /* Ancho del scrollbar */
+  }
+  
+  /* Estilo del thumb (la barra que puedes arrastrar) */
+  ::-webkit-scrollbar-thumb {
+    background-color: #555050; /* Color del thumb */
+    border-radius: 10px; /* Borde redondeado del thumb */
+  }
+  
+  /* Estilo del track (la barra de fondo) */
+  ::-webkit-scrollbar-track {
+    background-color: transparent; /* Color del track */
+  }
+.visual{
+    visibility:visible;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    z-index: 0;
+    border: 2px solid #198754;
+}
+
+.visuali{
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+    animation: wipe-cinematic-in .5s ease-in-out;
+}
+@keyframes wipe-cinematic-in {
+    0% {
+        clip-path: inset(100% 0 100% 0);
+        /* height: 0; */
+    }
+    /* 50% {
+        clip-path: inset(100% 0 100% 0);
+        height: 71.01%;
+    } */
+    100% {
+        clip-path: inset(0 0 0 0);
+        /* height: auto; */
+    }
+}
+
+.padre{
+    transition: all .3s ease;
+}
+.blur {
+    transition: filter .3s ease;
+    filter: blur(5px); /* Ajusta el valor del blur según tus preferencias */
+}
+
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 45px;
+    bottom: 45px;
+    z-index: 99;
+}
+
+
+/*** Spinner ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/*** Button ***/
+.btn {
+    transition: .5s;
+}
+
+.btn-square {
+    width: 38px;
+    height: 38px;
+}
+
+.btn-sm-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    border-radius: 50px;
+}
+
+
+/*** Layout ***/
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--secondary);
+    transition: 0.5s;
+    z-index: 999;
+}
+
+.content {
+    margin-left: 250px;
+    min-height: 100vh;
+    background: var(--dark);
+    transition: 0.5s;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        margin-left: 0;
+    }
+
+    .sidebar.open {
+        margin-left: -250px;
+    }
+
+    .content {
+        width: calc(100% - 250px);
+    }
+
+    .content.open {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        margin-left: -250px;
+    }
+
+    .sidebar.open {
+        margin-left: 0;
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+
+/*** Navbar ***/
+.sidebar .navbar .navbar-nav .nav-link {
+    padding: 7px 20px;
+    color: var(--light);
+    font-weight: 500;
+    border-left: 3px solid var(--secondary);
+    border-radius: 0 30px 30px 0;
+    outline: none;
+}
+
+.sidebar .navbar .navbar-nav .nav-link:hover,
+.sidebar .navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+    background: var(--dark);
+    border-color: var(--primary);
+}
+
+.sidebar .navbar .navbar-nav .nav-link i {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark);
+    border-radius: 40px;
+}
+
+.sidebar .navbar .navbar-nav .nav-link:hover i,
+.sidebar .navbar .navbar-nav .nav-link.active i {
+    background: var(--secondary);
+}
+
+.sidebar .navbar .dropdown-toggle::after {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+.sidebar .navbar .dropdown-item {
+    padding-left: 25px;
+    border-radius: 0 30px 30px 0;
+    color: var(--light);
+}
+
+.sidebar .navbar .dropdown-item:hover,
+.sidebar .navbar .dropdown-item.active {
+    background: var(--dark);
+}
+
+.content .navbar .navbar-nav .nav-link {
+    margin-left: 25px;
+    padding: 12px 0;
+    color: var(--light);
+    outline: none;
+}
+
+.content .navbar .navbar-nav .nav-link:hover,
+.content .navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+}
+
+.content .navbar .sidebar-toggler,
+.content .navbar .navbar-nav .nav-link i {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark);
+    border-radius: 40px;
+}
+
+.content .navbar .dropdown-item {
+    color: var(--light);
+}
+
+.content .navbar .dropdown-item:hover,
+.content .navbar .dropdown-item.active {
+    background: var(--dark);
+}
+
+.content .navbar .dropdown-toggle::after {
+    margin-left: 6px;
+    vertical-align: middle;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.content .navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+@media (max-width: 575.98px) {
+    .content .navbar .navbar-nav .nav-link {
+        margin-left: 15px;
+    }
+}
+
+
+/*** Date Picker ***/
+.bootstrap-datetimepicker-widget.bottom {
+    top: auto !important;
+}
+
+.bootstrap-datetimepicker-widget .table * {
+    border-bottom-width: 0px;
+}
+
+.bootstrap-datetimepicker-widget .table th {
+    font-weight: 500;
+}
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.bootstrap-datetimepicker-widget table td.active,
+.bootstrap-datetimepicker-widget table td.active:hover {
+    background: var(--primary);
+}
+
+.bootstrap-datetimepicker-widget table td.today::before {
+    border-bottom-color: var(--primary);
+}
+
+
+/*** Testimonial ***/
+.progress .progress-bar {
+    width: 0px;
+    transition: 2s;
+}
+
+
+/*** Testimonial ***/
+.testimonial-carousel .owl-dots {
+    margin-top: 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.testimonial-carousel .owl-dot {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    width: 15px;
+    height: 15px;
+    border: 5px solid var(--primary);
+    border-radius: 15px;
+    transition: .5s;
+}
+
+.testimonial-carousel .owl-dot.active {
+    background: var(--dark);
+    border-color: var(--primary);
+}
