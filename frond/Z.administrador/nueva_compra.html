@@ -193,13 +193,14 @@
 
       <div class="container-fluid pt-4 px-4" id="chart">
         <div class="row g-4 mb-4">
-          <div class="bg-secondary rounded p-4 col-12">
+          <form class="bg-secondary rounded p-4 col-12" id="buscarproveedor">
             <!-- Top div with title and button -->
-            <div class="d-flex align-items-center mb-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
               <h6 class="mb-0">Datos Proveedor</h6>
+              <button class="btn btn-primary" id="btnBuscarProveedor">Bucar proveedor</button>
             </div>
             <!-- Responsive Horizontal Form -->
-            <form>
+            <div>
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
                   <label for="inputNombre" class="form-label">Razon Social:</label>
@@ -215,44 +216,45 @@
                   <input type="text" class="form-control" id="direccionproveedor">
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
 
         <div class="row g-4 mb-4">
           <div class="bg-secondary rounded p-4 col-12">
             <!-- Top div with title and button -->
-            <div class="d-flex align-items-center mb-4">
+            <form class="d-flex align-items-center gap-3 mb-4" id="buscarproducto">
               <h6 class="mb-0">Buscar Producto</h6>
-            </div>
+              <button class="btn btn-primary" id="btnBuscarProducto">Buscar producto</button>
+            </form>
             <!-- Responsive Horizontal Form -->
-            <form>
+            <form id="agregarproducto">
               <div class="row mb-3">
                 <div class="col-md-4 mb-3">
-                  <label for="inputNombre" class="form-label">Nombre del producto:</label>
-                  <select class="form-select form-select-sm mb-3" id="producto" required>
+                  <label for="inputNombre" class="form-label">Nombre producto:</label>
+                  <select class="form-select" id="producto" required>
                   </select>
                 </div>
                 <div class="col-md-1 mb-3">
                   <label for="inputApellido" class="form-label">Stock:</label>
-                  <input type="text" class="form-control" id="stock">
+                  <input type="text" class="form-control pe-none" id="stock" placeholder="0">
                 </div>
                 <div class="col-md-1 mb-3">
                   <label for="inputApellido" class="form-label">Cantidad:</label>
-                  <input type="text" class="form-control" id="cantida">
+                  <input type="text" class="form-control" id="cantidad" placeholder="0">
                 </div>
                 <div class="col-md-2 mb-3">
-                  <label for="inputApellido" class="form-label">Sub total:</label>
-                  <input type="text" class="form-control" id="subtotal">
+                  <label for="inputApellido" class="form-label">Precio unitario:</label>
+                  <input type="text" class="form-control pe-none" id="preciounitario" placeholder="0.00">
                 </div>
                 <div class="col-md-2 mb-3">
-                  <label for="inputApellido" class="form-label">Cantidad:</label>
-                  <input type="text" class="form-control" id="inputApellido">
+                  <label for="inputApellido" class="form-label">Precio total:</label>
+                  <input type="text" class="form-control pe-none" id="preciototal" placeholder="0.00">
                 </div>
                 <div class="col-md-2 mb-3">
                   <label for="inputApellido" class="form-label">Accion:</label>
                   <br>
-                  <button class="btn btn-primary" id="btnAgregarUsuario">Agregar producto</button>
+                  <button class="btn btn-primary" >Agregar producto</button>
                 </div>
               </div>
             </form>
@@ -265,24 +267,38 @@
               <table id="myTable" class="table align-middle table-bordered table-hover mb-0">
                 <thead>
                   <tr class="text-white">
-                    <th scope="col">#</th>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Fecha de <br> elaboracion</th>
-                    <th scope="col">Fecha de <br> vencimiento</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Medida</th>
-                    <th scope="col">Fecha de <br> Registro</th>
-                    <th scope="col">Habilitado</th>
-                    <th scope="col">Acciones</th>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Precio Total</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody id="productos">
-                  <!--mostrar tabla usuario-->
+                  
                 </tbody>
-            </div>
-            </table>
+                <tfoot>
+                  <tr>
+                    <td colspan="4" class="text-end">Sub_Total S/.</td>
+                    <td colspan="2" id="subTotal">0.00</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="text-end">Igv (1.18%)</td>
+                    <td colspan="2" id="igv">0.00</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="text-end">Total S/.</td>
+                    <td colspan="2" id="total">0.00</td>
+                  </tr>
+                </tfoot>
+              </table>
+              <div class=" mb-3">
+                <br>
+                <form class="d-flex justify-content-end" id="generarcompra">
+                  <button class="btn btn-primary" >Generar compra</button>
+                </form>
+              </div>
           </div>
         </div>
 

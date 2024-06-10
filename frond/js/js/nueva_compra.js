@@ -230,8 +230,8 @@ const populateFormSelects = async () => {
         const razonsocial = await getAllProveedor(); // Suponiendo que esta función devuelve un array de objetos con id_proveedor y razon_social
         const producto = await getAllProducto(); // Suponiendo lo mismo para los productos
 
-        populateSelect(razon_socialSelect, razonsocial, "id_proveedor", "razon_social");
-        populateSelect(productoSelect, producto, "id_producto", "nombre_producto");
+        populateSelect(razon_socialSelect, razonsocial, "razon_social", "razon_social");
+        populateSelect(productoSelect, producto, "nombre_producto", "nombre_producto");
 
         // Inicializa Select2 en los selectores después de haber poblado las opciones
         $(document).ready(function () {
@@ -246,44 +246,82 @@ const populateFormSelects = async () => {
 // Llama a esta función para poblar los select cuando la página se carga
 populateFormSelects();
 
-// Agrega este código después de la función populateFormSelects()
-
-const fillContactInfo = () => {
-    const razon_socialSelect = document.getElementById("razonsocial");
-    const telefonoInput = document.getElementById("telefonoproveedor");
-    const direccionInput = document.getElementById("direccionproveedor");
-
-    console.log(telefonoInput)
-
-    /* razon_socialSelect.addEventListener("change", (event) => {
-        const selectedProveedorId = event.target.value;
-        console.log(selectedProveedorId); // Aquí obtienes el ID del proveedor seleccionado
-    
-        // Ahora puedes realizar acciones basadas en el ID seleccionado, como buscar información adicional del proveedor
-    }); */
-    razon_socialSelect.addEventListener("change", (event) => {
-        const selectedProveedorId = event.target.value;
-        const selectedProveedor = razonsocial.find(proveedor => proveedor.id_proveedor === selectedProveedorId);
-        
-        if (selectedProveedor) {
-            telefonoInput.value = selectedProveedor.telefono;
-            direccionInput.value = selectedProveedor.direccion;
-        } else {
-            // Limpiar los campos si no se selecciona ningún proveedor
-            telefonoInput.textContent = "";
-            direccionInput.textContent = "";
-        }
-    });
-};
-
-// Llama a esta función después de poblar los select
-fillContactInfo();
 
 
+//***********************************BUSCAR CLIENTE*************************************/
+// Obtener el elemento select por su ID
+const form = document.getElementById("buscarproveedor");
 
+// Agregar un evento de escucha para el evento change del select
+form.addEventListener('submit', async function (event) {
+  event.preventDefault(); // Evitar que se recargue la página al cambiar el valor
 
+  // Obtener el valor seleccionado del NIT
+  const razonsocial = document.getElementById('razonsocial').value;
+  
+  try {
+    // Verificar si el token está presente en el localStorage
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // Si el token no está presente, redirigir al usuario a la página de inicio de sesión
+      window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
+      return; // Detener la ejecución del código
+    }
+    // Enviar los datos al servidor para crear el nuevo usuario
+    const response = await fetch(
+      "http://localhost:3009/La_holandesa/buscliente",
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        //: formData, // Usar el FormData que contiene la foto
+        body: JSON.stringify({
+                nit
+            }),
+      });
 
+    if (response.ok) {
+      const data = await response.json();
 
+      idcliente = data;
+
+      datoscliente(data)
+    } else {
+      const errorData = await response.json();
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+      Toast.fire({
+        icon: "error",
+        title: errorData.error,
+      });
+    }
+  } catch (error) {
+    console.error("Error al enviar la solicitud:", error);
+    alert("Error al enviar la solicitud");
+  }
+});
+
+const datoscliente = (data) =>{
+    const Inputnombrecliente = document.getElementById('nombrecliente');
+    const Inputapellidocliente = document.getElementById('apellidocliente');
+
+    if (data.data && data.data.length > 0) {
+        const { nombre, apellido } = data.data[0];
+        Inputnombrecliente.value = nombre;
+        Inputapellidocliente.value = apellido;
+    } else {
+        Inputnombrecliente.value = '';
+        Inputapellidocliente.value = '';
+    }
+}
+//***********************************BUSCAR CLIENTE************************************/
 
 
 
