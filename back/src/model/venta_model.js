@@ -59,7 +59,7 @@ const {
 
     
     
-    // Método para generar venta
+    // Método para nuscar producto
     static async busproducto(producto) {
       try {
         const pool = await connectToPostgres();

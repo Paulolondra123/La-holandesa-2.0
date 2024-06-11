@@ -54,11 +54,11 @@ class Users {
         res.status(200).json(data);
       } else {
         // Error al crear la medida en el modelo
-        res.status(500).json({ error: "Error al buscara el cliente" });
+        res.status(500).json({ error: "Error al buscara el producto" });
       }
     } catch (error) {
-      console.error("Error al buscar cliente:", error);
-      res.status(500).json({ error: "Error al buscar cliente" });
+      console.error("Error al buscar producto:", error);
+      res.status(500).json({ error: "Error al buscar producto" });
     }
     
   }
