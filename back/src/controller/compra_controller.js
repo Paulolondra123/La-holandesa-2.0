@@ -61,25 +61,25 @@ class Users {
     }
   }
 
-  // Metodo para generar venta
-  static async geneventa(req, res) {
+  // Metodo para generar compra
+  static async genecompra(req, res) {
     try {
-        const { id_usuario, id_Cliente, total, productos } = req.body;
+        const { id_usuario, id_Proveedor, total, productos } = req.body;
 
         // Llamar al método para crear el proveedor en el modelo
-        const result = await Usersmodel.geneventa(id_usuario, id_Cliente, total, productos);
+        const result = await Usersmodel.genecompra(id_usuario, id_Proveedor, total, productos);
 
         // Verificar si el proveedor se creó correctamente en el modelo
         if (result) {
             // Proveedor creado correctamente
-            res.status(200).json({ message: 'Venta generada correctamente' });
+            res.status(200).json({ message: 'Compra generada correctamente' });
         } else {
             // Error al crear el proveedor en el modelo
-            res.status(500).json({ error: 'Error al generar la venta' });
+            res.status(500).json({ error: 'Error al generar la compra' });
         }
     } catch (error) {
-        console.error('Error al generar la venta:', error);
-        res.status(500).json({ error: 'Error al generar la venta' });
+        console.error('Error al generar la compra:', error);
+        res.status(500).json({ error: 'Error al generar la compra' });
     }
 }
 }

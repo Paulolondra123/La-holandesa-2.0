@@ -1,4 +1,4 @@
-let idcliente = ''
+let idproveedor = ''
 let idproducto = ''
 let datosUsuario = null; // Declarar la variable en el ámbito global
 
@@ -289,7 +289,7 @@ form.addEventListener('submit', async function (event) {
     if (response.ok) {
       const data = await response.json();
 
-      idcliente = data;
+      idproveedor = data;
 
       datoscliente(data)
     } else {
@@ -596,7 +596,7 @@ function eliminarProductoDelArray(id) {
 
 //***********************************GENERAR VENTA*************************************/
 // Obtener el elemento select por su ID
-const generarventa = document.getElementById("generarventa");
+const generarventa = document.getElementById("generarcompra");
 
 // Agregar un evento de escucha para el evento change del select
 generarventa.addEventListener('submit', async function (event) {
@@ -607,8 +607,8 @@ generarventa.addEventListener('submit', async function (event) {
   const id_usuario = id;
   //const {id_producto} = idproducto.data[0];
   //const id_Producto = id_producto
-  const {id_cliente} = idcliente.data[0];
-  const id_Cliente = id_cliente;
+  const {id_proveedor} = idproveedor.data[0];
+  const id_Proveedor = id_proveedor;
   const total = parseFloat(document.getElementById('total').textContent);
 
 
@@ -622,7 +622,7 @@ generarventa.addEventListener('submit', async function (event) {
     }
     // Enviar los datos al servidor para crear el nuevo usuario
     const response = await fetch(
-      "http://localhost:3009/La_holandesa/geneventa",
+      "http://localhost:3009/La_holandesa/genecompra",
       {
         method: "POST",
         headers: {
@@ -632,7 +632,7 @@ generarventa.addEventListener('submit', async function (event) {
         //: formData, // Usar el FormData que contiene la foto
         body: JSON.stringify({
                 id_usuario,
-                id_Cliente,
+                id_Proveedor,
                 total,
                 productos: productosAgregados 
             }),

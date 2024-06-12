@@ -12,6 +12,6 @@ router.post('/busproveedor',Users.busproveedor)
 // Ruta para obtener los datos del producto
 router.post('/busproducto',Users.busproducto)
 // Ruta para obtener los datos del producto
-//router.post('/geneventa',Users.geneventa)
+router.post('/genecompra',Users.genecompra)
  
 module.exports = router 

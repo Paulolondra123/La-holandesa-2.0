@@ -84,8 +84,8 @@ const {
       }
     }
 
-    // Método para generar venta
-  static async geneventa(id_usuario, id_Cliente, total, productosAgregados) {
+    // Método para generar compra
+  static async genecompra(id_usuario, id_Proveedor, total, productosAgregados) {
     let pool;
     try {
       // Conectar a la base de datos PostgreSQL
@@ -101,30 +101,30 @@ const {
       const fecha_registro = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
 
       // Consulta para insertar una nueva venta en la base de datos
-      const queryVenta = `
-        INSERT INTO venta (monto_venta, fecha_venta, id_cliente, id_usuario)
+      const queryCompra = `
+        INSERT INTO compra (monto_compra, fecha_compra, id_proveedor, id_usuario)
         VALUES ($1, $2, $3, $4)
-        RETURNING id_venta;
+        RETURNING id_compra;
       `;
 
       // Ejecutar la consulta para insertar la venta y obtener el ID de la venta generada
-      const resultVenta = await pool.query(queryVenta, [total, fecha_registro, id_Cliente, id_usuario]);
-      const id_venta = resultVenta.rows[0].id_venta;
+      const resultCompra = await pool.query(queryCompra, [total, fecha_registro, id_Proveedor, id_usuario]);
+      const id_compra = resultCompra.rows[0].id_compra;
 
       // Consulta para insertar los productos vendidos en la tabla de detalle de venta
-      const queryDetalleVenta = `
-        INSERT INTO detalle_venta (id_venta, id_producto, cantidad_producto, precio_venta)
+      const queryDetalleCompra = `
+        INSERT INTO detalle_compra (id_compra, id_producto, cantidad_producto, precio_compra)
         VALUES ($1, $2, $3, $4);
       `;
 
       // Iterar sobre los productos agregados y ejecutar la consulta para cada producto
       for (const producto of productosAgregados) {
-        await pool.query(queryDetalleVenta, [id_venta, producto.id, producto.cantidad, producto.preciounitario]);
+        await pool.query(queryDetalleCompra, [id_compra, producto.id, producto.cantidad, producto.preciounitario]);
 
         // Actualizar el stock del producto en la tabla producto
         const queryActualizarStock = `
           UPDATE producto
-          SET stock = stock - $1
+          SET stock = stock + $1
           WHERE id_producto = $2;
         `;
         await pool.query(queryActualizarStock, [producto.cantidad, producto.id]);
@@ -133,14 +133,14 @@ const {
       // Confirmar la transacción
       await pool.query('COMMIT');
 
-      console.log('Venta generada correctamente');
+      console.log('Compra generada correctamente');
       return true;
     } catch (error) {
       // Revertir la transacción en caso de error
       if (pool) {
         await pool.query('ROLLBACK');
       }
-      console.error('Error al generar venta:', error);
+      console.error('Error al generar compra:', error);
       return false;
     } finally {
       // Desconectar de la base de datos
