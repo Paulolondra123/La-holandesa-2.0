@@ -3,9 +3,13 @@ const express = require("express");
 const router = express.Router();
 const Token = require("../token/token");
 const jwt = require("jsonwebtoken");
+const LoginController = require('../controller/login_controller')
 
 // Ruta para iniciar sesión y generar token
 router.post("/login", Token.token);
+
+router.put('/cambiar_contrasena', LoginController.changePassword);
+
 
 // Endpoint para verificar autenticación
 router.get("/verify-auth", (req, res) => {

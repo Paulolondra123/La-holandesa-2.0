@@ -8,9 +8,6 @@
 }
 
 
-.z{
-    z-index: 9999;
-}
 /* animacion para la campanita de notificaciones */
 @keyframes shake {
     0% { transform: rotate(0deg); }

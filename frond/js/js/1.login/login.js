@@ -29,9 +29,8 @@ form_login.addEventListener('submit', async (e) => {
                 timer: 1500,
                 showConfirmButton: false
             });
-            verificarAutenticacion(); // Verificar la autenticación después de iniciar sesión
+            await verificarprimerlogin();
         } else {
-            // Manejo de errores en caso de credenciales incorrectas
             Swal.fire({
                 title: "Error",
                 text: data.error || 'Credenciales incorrectas',
@@ -52,6 +51,37 @@ form_login.addEventListener('submit', async (e) => {
 });
 
 
+const verificarprimerlogin = async () => {
+    try {
+        const response = await fetch('http://localhost:3009/La_holandesa/verify-auth', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            userId = data.id;
+            const { primerlogin } = data;
+            console.log(primerlogin);
+            if (primerlogin === 'true') {
+                document.getElementById('change-password-container').style.zIndex = '9999';
+            } else {
+                await verificarAutenticacion();
+            }
+        } else {
+            window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
+        }
+    } catch (error) {
+        console.error("Error al verificar autenticación:", error);
+        window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
+    }
+};
+
+
+
 const verificarAutenticacion = async () => {
     try {
         const response = await fetch('http://localhost:3009/La_holandesa/verify-auth', {
@@ -65,21 +95,15 @@ const verificarAutenticacion = async () => {
         if (response.ok) {
             const data = await response.json();
             userId = data.id; 
-            const { perfil } = data; // Suponiendo que el perfil está incluido en los datos de la respuesta
-            //console.log(perfil)
-            // Redirigir según el perfil del usuario
+            const { perfil } = data;
             if (perfil === 'VENDEDOR') {
-                // Redirigir a la página del vendedor
                 window.location.href = "http://127.0.0.1:5500/frond/Y.vendedor/index.html";
             } else if (perfil === 'ADMINISTRADOR') {
-                // Redirigir a la página del administrador
                 window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/index.html";
             } else {
-                // Perfil desconocido, redirigir a la página de inicio de sesión
                 window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
             }
         } else {
-            // El usuario no está autenticado, redirigirlo a la página de inicio de sesión
             window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
         }
     } catch (error) {
@@ -88,24 +112,6 @@ const verificarAutenticacion = async () => {
 };
 
 // Llamar a la función de verificación de autenticación al cargar la página
-
-
-// Función para decodificar un token JWT (JSON Web Token)
-function parseJwt(token) {
-    try {
-        // Dividir el token en sus tres partes: encabezado, carga útil y firma
-        const [header, payload, signature] = token.split('.');
-        // Decodificar la carga útil Base64 y analizarla como JSON
-        const decodedPayload = JSON.parse(atob(payload));
-        // Decodificar el encabezado Base64 y analizarlo como JSON
-        const decodedHeader = JSON.parse(atob(header));
-        return { header: decodedHeader, payload: decodedPayload };
-    } catch (error) {
-        // Manejar errores al decodificar el token
-        console.error('Error al decodificar el token:', error);
-        return null;
-    }
-}
 
 //**************Función para verificar la autenticación del usuario********************/
 
@@ -119,8 +125,6 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
   const nuevaContraseña = document.getElementById("nueva_contraseña").value;
   const confirmarContraseña = document.getElementById("confirmar_contraseña").value;
 
-
-  // Verificar si las contraseñas nuevas coinciden
   if (nuevaContraseña !== confirmarContraseña) {
       Swal.fire({
           icon: 'error',
@@ -131,7 +135,6 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
   }
 
   try {
-      // Mostrar el SweetAlert2 antes de guardar los cambios
       const { isConfirmed } = await Swal.fire({
         title: '¿Estás seguro?',
         text: '¿Quieres guardar los cambios realizados?',
@@ -143,12 +146,10 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
       });
 
       if (isConfirmed) {
-        // Hacer una solicitud HTTP al servidor para obtener el token
         const token = localStorage.getItem("token");
         if (!token) {
-          // Si el token no está presente, redirigir al usuario a la página de inicio de sesión
           window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
-          return; // Detener la ejecución del código
+          return;
         }
         const response = await fetch(
             'http://localhost:3009/La_holandesa/cambiar_contrasena',
@@ -159,8 +160,7 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
                   Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    userId, //`${userId}`, // Incluir el ID del usuario en el cuerpo de la solicitud 
-                    contraseñaActual,
+                    userId,
                     nuevaContraseña,
                 }),
             }
@@ -169,7 +169,6 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
         const result = await response.json();
 
         if (response.status !== 200) {
-            // Actualizar la tabla después de cambiar el estado
             const Toast = Swal.mixin({
               toast: true,
               position: "bottom-end",
@@ -183,7 +182,7 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
             });
             return;
         }
-        // Actualizar la tabla después de cambiar el estado
+
         const Toast = Swal.mixin({
           toast: true,
           position: "bottom-end",
@@ -196,17 +195,12 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
           title: 'Contraseña actualizada correctamente',
         });
         document.getElementById("change-password-form").reset();
+        document.getElementById('change-password-container').style.zIndex = '-1';
 
       } else {
-        // Si el usuario cancela y limpia el formulario
         document.getElementById("change-password-form").reset();
       }
   } catch (error) {
-      /* Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Ocurrió un error al actualizar la contraseña',
-      }); */
       const Toast = Swal.mixin({
         toast: true,
         position: "bottom-end",
