@@ -433,6 +433,7 @@ CREATE TABLE usuario (
     usuario VARCHAR(100) COLLATE "C" UNIQUE NOT NULL,
     contraseña VARCHAR(200) COLLATE "C" NOT NULL,
     fecha_registro TIMESTAMP NOT NULL,
+    primerlogin BOOLEAN DEFAULT TRUE
     estado BOOLEAN DEFAULT TRUE
 );
 

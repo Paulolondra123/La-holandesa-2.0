@@ -63,6 +63,7 @@ class LoginController {
                 fecha_registro: user.fecha_registro,
                 username: user.usuario,
                 estado: user.estado,
+                primerlogin: user.primerlogin,
                 isAuthenticated: true // Agregar isAuthenticated al payload
             };
             const token = jwt.sign(tokenPayload, 'secretkey');

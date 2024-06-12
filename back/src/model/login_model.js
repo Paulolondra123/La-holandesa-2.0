@@ -69,7 +69,7 @@ class buscarusers {
 
             // Consultar la base de datos para obtener el usuario
             const query = `
-                SELECT id_usuario, nombres, apellidos, perfil, usuario, contraseña, estado, fecha_registro 
+                SELECT id_usuario, nombres, apellidos, perfil, usuario, contraseña, estado, fecha_registro, primerlogin 
                 FROM usuario WHERE usuario = $1;
             `;
             // Ejecutar la consulta con parámetros
@@ -95,6 +95,7 @@ class buscarusers {
                         usuario: usuario.usuario,
                         perfil: usuario.perfil,
                         fecha_registro: usuario.fecha_registro,
+                        primerlogin: usuario.primerlogin,
                         estado: usuario.estado,
                     };
                 }
