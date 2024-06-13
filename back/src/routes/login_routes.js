@@ -19,11 +19,12 @@ router.get("/verify-auth", (req, res) => {
         if (authorizationHeader) {
             const token = authorizationHeader.split(" ")[1];
             const decoded = jwt.verify(token, 'secretkey');
-        
+            
             if (decoded.isAuthenticated === true) {
-                // Incluir el perfil del usuario en la respuesta si la autenticación es exitosa
-                const perfil = decoded.perfil;
-                res.status(200).json({ message: "Acceso autorizado", perfil });
+                // Extraer perfil y primerlogin del token decodificado
+                const { perfil, primerlogin, id } = decoded;
+                // Enviar perfil y primerlogin en la respuesta
+                res.status(200).json({ message: "Acceso autorizado", perfil, primerlogin, id });
             } else {
                 res.status(401).json({ message: "Acceso no autorizado" });
             }

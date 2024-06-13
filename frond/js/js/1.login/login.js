@@ -1,4 +1,5 @@
 let userId = null; // Variable global para almacenar el ID del usuario
+
 // login.js
 const form_login = document.getElementById('login-form');
 form_login.addEventListener('submit', async (e) => {
@@ -23,13 +24,10 @@ form_login.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             localStorage.setItem('token', data.token);
-            await Swal.fire({
-                title: "Logueado correctamente!",
-                icon: "success",
-                timer: 1500,
-                showConfirmButton: false
-            });
+
             await verificarprimerlogin();
+
+            
         } else {
             Swal.fire({
                 title: "Error",
@@ -53,21 +51,29 @@ form_login.addEventListener('submit', async (e) => {
 
 const verificarprimerlogin = async () => {
     try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
+          return;
+        }
         const response = await fetch('http://localhost:3009/La_holandesa/verify-auth', {
             method: 'GET',
             credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             }
         });
 
         if (response.ok) {
             const data = await response.json();
-            userId = data.id;
-            const { primerlogin } = data;
-            console.log(primerlogin);
-            if (primerlogin === 'true') {
-                document.getElementById('change-password-container').style.zIndex = '9999';
+            
+            const { perfil, primerlogin, id } = data;
+            userId = id; // Asegúrate de que `id` esté en `perfil`
+            
+            if (primerlogin === true) {
+
+                document.getElementById('change-password-container').style.zIndex = '0';
+                document.getElementById('change-password-container').style.opacity = '1';
             } else {
                 await verificarAutenticacion();
             }
@@ -84,21 +90,40 @@ const verificarprimerlogin = async () => {
 
 const verificarAutenticacion = async () => {
     try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
+          return;
+        }
         const response = await fetch('http://localhost:3009/La_holandesa/verify-auth', {
             method: 'GET',
             credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             }
         });
 
         if (response.ok) {
             const data = await response.json();
-            userId = data.id; 
+            
             const { perfil } = data;
+
+            console.log(perfil);
             if (perfil === 'VENDEDOR') {
+                await Swal.fire({
+                    title: "Logueado correctamente!",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
                 window.location.href = "http://127.0.0.1:5500/frond/Y.vendedor/index.html";
             } else if (perfil === 'ADMINISTRADOR') {
+                await Swal.fire({
+                    title: "Logueado correctamente!",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                });
                 window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/index.html";
             } else {
                 window.location.href = "http://127.0.0.1:5500/frond/Z.administrador/login.html";
@@ -144,7 +169,7 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sí, guardar',
       });
-
+      await userId
       if (isConfirmed) {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -165,6 +190,7 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
                 }),
             }
         );
+        document.getElementById('change-password-container').style.opacity = '0';
 
         const result = await response.json();
 
@@ -195,8 +221,9 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
           title: 'Contraseña actualizada correctamente',
         });
         document.getElementById("change-password-form").reset();
-        document.getElementById('change-password-container').style.zIndex = '-1';
-
+       
+        // Redirigir al usuario a la página principal adecuada
+        await verificarAutenticacion();
       } else {
         document.getElementById("change-password-form").reset();
       }
@@ -218,5 +245,3 @@ formcanbiarcontra.addEventListener("submit", async function (event) {
   
 
 //*****************************editar contraseña y guardar********************************/
-
-  

@@ -74,7 +74,7 @@ class buscarusers {
             `;
             // Ejecutar la consulta con parámetros
             const result = await pool.query(query, [username]);
-            console.log(result.rows)
+            
 
             // Verificar si se encontró un usuario
             if (result.rows.length > 0) {
@@ -139,7 +139,9 @@ class buscarusers {
 
             // Actualizar la contraseña en la base de datos
             const query = `
-                UPDATE usuario SET contraseña = $1 WHERE id_usuario = $2
+                UPDATE usuario 
+                SET contraseña = $1 , primerlogin = false 
+                WHERE id_usuario = $2
                 RETURNING *;
             `;
 
